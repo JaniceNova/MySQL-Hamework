@@ -23,27 +23,36 @@ var connection = mysql.createConnection({
   });
 
 const cTable = require('console.table');
- var choiceArray = [];
+
 
     connection.query("SELECT * FROM products", function(err, results) {
         if (err) throw err;
-     
-               
-                for (var i = 0; i < results.length; i++) {
-                  choiceArray.push(results[i]);
-                
-                }
-                return choiceArray;
-              })
-          
-            
-console.log(choiceArray)
+     console.table(results)
+     var options = [];
+     for (i=0; i<results.length; i++) {
+      options.push(results[i].product_name)
 
-
-
-// console.table([choiceArray
-
-
+     };
  
-// ]);
 
+
+
+ inquirer
+     .prompt([{
+ 
+      type: 'list',
+      name: 'size',
+      message: 'What would you like to buy?',
+      choices:   options
+
+    }])
+    .then(function(answer) {
+           
+              })
+
+
+
+
+
+    })
+    

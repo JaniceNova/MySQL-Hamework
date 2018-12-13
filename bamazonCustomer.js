@@ -3,56 +3,75 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 
 var connection = mysql.createConnection({
-    host: "localhost",
-  
-    // Your port; if not 3306
-    port: 3306,
-  
-    // Your username
-    user: "root",
-  
-    // Your password
-    password: "password",
-    database: "bamazon_DB"
-  });
-  
-  connection.connect(function(err) {
-    if (err) throw err;
-    // run the start function after the connection is made to prompt the user
-   // start();
-  });
+  host: "localhost",
+
+  // Your port; if not 3306
+  port: 3306,
+
+  // Your username
+  user: "root",
+
+  // Your password
+  password: "password",
+  database: "bamazon_DB"
+});
+
+connection.connect(function (err) {
+  if (err) throw err;
+  // run the start function after the connection is made to prompt the user
+  // start();
+});
 
 const cTable = require('console.table');
 
 
-    connection.query("SELECT * FROM products", function(err, results) {
-        if (err) throw err;
-     console.table(results)
-     var options = [];
-     for (i=0; i<results.length; i++) {
-      options.push(results[i].product_name)
+connection.query("SELECT * FROM products", function (err, results) {
+  if (err) throw err;
+  console.table(results)
+  var options = [];
+  for (i = 0; i < results.length; i++) {
+    options.push(results[i].product_name)
 
-     };
- 
-
+  };
 
 
- inquirer
-     .prompt([{
- 
+
+
+  inquirer
+    .prompt([{
+
       type: 'list',
       name: 'size',
       message: 'What would you like to buy?',
-      choices:   options
+      choices: options
 
     }])
-    .then(function(answer) {
-           
-              })
+    .then(function (answer) {
+      console.table(results)
+      inquirer
+        .prompt([{
+
+          type: 'input',
+          message: 'How many do you want to buy?',
+          name: 'number'
+
+        }]).then(function (answer) {
+          if (parseInt(answer.number) > 1) {
+            console.log("hello")
 
 
-
+          }
+          else {
+            console.log("hi")
+          }
+        })
 
 
     })
-    
+
+
+
+
+
+
+})

@@ -41,37 +41,27 @@ connection.query("SELECT * FROM products", function (err, results) {
     .prompt([{
 
       type: 'list',
-      name: 'size',
+      name: 'item',
       message: 'What would you like to buy?',
       choices: options
 
+    }, {
+      type: 'input',
+      message: 'How many do you want to buy?',
+      name: 'number'
     }])
     .then(function (answer) {
-      console.table(results)
-      inquirer
-        .prompt([{
-
-          type: 'input',
-          message: 'How many do you want to buy?',
-          name: 'number'
-
-        }]).then(function (answer) {
-          if (parseInt(answer.number) > 1) {
-            console.log("hello")
-
-
-          }
-          else {
-            console.log("hi")
-          }
-        })
-
-
+      console.log(answer.item)
+      connection.query("SELECT * FROM products WHERE product_name=?", [answer.item], function (err, res) {
+        if (err) throw err;
+        console.log(res)
+        if (parseInt(answer.number) <= res[0].stock_quantity) {
+          console.log("User can buy");
+        }
+        else {
+          
+          console.log("Insufficent stock quantity");
+        }
+      })
     })
-
-
-
-
-
-
 })

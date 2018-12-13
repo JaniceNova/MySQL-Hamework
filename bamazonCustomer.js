@@ -51,16 +51,20 @@ connection.query("SELECT * FROM products", function (err, results) {
       name: 'number'
     }])
     .then(function (answer) {
-      console.log(answer.item)
+     // console.log(answer.item)
       connection.query("SELECT * FROM products WHERE product_name=?", [answer.item], function (err, res) {
         if (err) throw err;
-        console.log(res)
+       // console.log(res)
         if (parseInt(answer.number) <= res[0].stock_quantity) {
-          console.log("User can buy");
+          console.log("Here is your " + answer.item + "! Thank you!");
+           newquantity = res[0].stock_quantity - answer.number
+           console.log("There are " + newquantity +" "+ answer.item + " items left.");
+           price = answer.number * res[0].price
+           console.log("Your total is $" + price);
         }
         else {
           
-          console.log("Insufficent stock quantity");
+          console.log("Insufficent stock quantity!  Please pick another item.");
         }
       })
     })
